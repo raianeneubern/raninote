@@ -1,0 +1,21 @@
+1º Configurar o GIT Local
+git config --global user.name raianeneubern
+git config --global user.email raianeneubern@gmail.com
+
+ -Criando Projeto
+npx create-expo-app Raninote
+
+2º cd Raninote
+
+ -Instalar o Expo Router 
+3º npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+
+ -Configurar o Expo Router
+4º  Abrir o package.json e alterar a chave main
+        "main": "expo-router/entry",
+    Abrir o app.json e vai incluir a linha:
+        "scheme": "Raninote",
+
+5º npx expo start --localhost --android
+
+6º Criar uma pasta src e dentro dela criar a pasta app
