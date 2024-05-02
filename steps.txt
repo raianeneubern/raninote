@@ -18,4 +18,8 @@ npx create-expo-app Raninote
 
 5º npx expo start --localhost --android
 
+-Rodar na web
+     npx expo install react-dom react-native-web @expo/metro-runtime
+     npx expo start
+
 6º Criar uma pasta src e dentro dela criar a pasta app
