@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from './style';
+import ItemList from '../../componentes/ItemList';
 
 export default function index() {
   return (
@@ -26,10 +27,17 @@ export default function index() {
         </View>
 
         {/* Lista de Produtos */}
+        <ItemList item={"Café"}></ItemList>
+        <ItemList item={"Chocolate"}></ItemList>
 
         <View style={styles.footer}>
           <View style={styles.inputContainer}>
-            <TextInput />
+            <TextInput 
+              color="#fff"
+              fontSize={18}
+              placeholderTextColor="#aeaeae"
+              placeholder="Digite o nome do produto..."
+            />
           </View>
           <TouchableOpacity style={styles.iconContainer}>
             <Ionicons name="add" size={32} color="#fff" />
