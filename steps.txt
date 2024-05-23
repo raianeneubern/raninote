@@ -23,3 +23,5 @@ npx create-expo-app Raninote
      npx expo start
 
 6º Criar uma pasta src e dentro dela criar a pasta app
+
+npx expo install @react-native-async-storage/async-storage
