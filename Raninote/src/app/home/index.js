@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
   View, 
   Text, 
@@ -14,33 +14,89 @@ import { styles } from './style';
 import ItemList from '../../componentes/ItemList';
 import { StatusBar } from 'expo-status-bar';
 import AsynnStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function index() {
   const [textInput, setTextInput] = useState('')
   const [items, setItems] = useState([]);
+  useEffect(() => {
+    getItemsFromDevice();
+  }, [])
+  useEffect(() => {
+    saveItemToDevice();
+  }, [items])
 
   const saveItemToDevice = async () => {
-
+    try {
+      const itemJson = JSON.stringify(items);
+      await AsyncStorage.setItem('Raninote', itemJson);
+    } catch (error) {
+      console.log(`Erro: ${error}`);
+    }
   }
 
   const getItemsFromDevice = async () => {
-
+    try {
+      const items = await AsyncStorage.getItem('Raninote');
+      if (items != null) {
+        setItems(JSON.parse(items));
+      }
+    } catch (error) {
+      console.log(`Erro: ${error}`);
+    }
   }
 
   const addItem = () => {
-
+     //console.log(textInput);
+    if (textInput == '') {
+      Alert.alert('Ocorreu um problema :(',
+      'Por favor, informe o nome do produto');
+    } else {
+      const newItem = {
+        id: Math.random(),
+        name: textInput,
+        bought: false
+      };
+      setItems([...items, newItem]);
+      setTextInput('');
+    }
   }
 
   const markItemBought = itemId => {
-
+    const newItems = items.map((item) => {
+        if (item.id == itemId) {
+          return { ...item, bought: true}
+        }
+        return item;
+    });
+    setItems(newItems);
   }
 
   const unmarkItemBought = itemId => {
-
+    const newItems = items.map((item) => {
+      if (item.id == itemId) {
+        return { ...item, bought: false}
+      }
+      return item;
+    });
+    setItems(newItems);
   }
 
   const removeItem = itemId => {
-
+    Alert.alert('Excluir Produto?',
+    'Confirma a exclusão deste Produto',
+    [
+      {
+        text: 'Sim', onPress: () => {
+          const newItems = items.filter(item => item.id != itemId);
+          setItems(newItems);
+        }
+      },
+      {
+        text: 'Cancelar', style: 'cancel'
+      }
+    ]
+    )
   }
 
   const removeAll = () => {
@@ -74,7 +130,7 @@ export default function index() {
           contentContainerStyle={{ padding: 20, paddingBottom: 100, color: '#fff'}}
           data={items}
           renderItem={({item}) =>
-            <ListItem item={item} 
+            <ItemList item={item} 
             markItem={markItemBought}
             unmarkItem={unmarkItemBought}
             removeItem={removeItem}
@@ -90,7 +146,7 @@ export default function index() {
               placeholderTextColor="#aeaeae"
               placeholder="Digite o nome do produto..."
               value={textInput}
-              onChange={(text) => setTextInput(text)}
+              onChangeText={(text) => setTextInput(text)}
             />
           </View>
           <TouchableOpacity style={styles.iconContainer} onPress={addItem}>
